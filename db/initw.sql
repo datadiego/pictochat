@@ -1,0 +1,17 @@
+DROP TABLE IF EXISTS mensajes;
+DROP TABLE IF EXISTS lineas;
+CREATE TABLE mensajes (
+    id INTEGER PRIMARY KEY,
+    mensaje TEXT NOT NULL
+);
+
+CREATE TABLE lineas (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    x INTEGER NOT NULL,
+    y INTEGER NOT NULL,
+    pX INTEGER NOT NULL,
+    pY INTEGER NOT NULL
+);
+
+INSERT INTO mensajes (mensaje) VALUES ('Hola mundo!');
+INSERT INTO lineas (x, y, pX, pY) VALUES (10, 5, 13, 7);

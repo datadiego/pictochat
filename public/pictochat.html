@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pictochat</title>
+  <script src="p5.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+  <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <section>
+    <div id="chat-titulo">
+    <h2>Chat</h2>
+    <button id="btn-toggle-chat" onclick="toggleChat()"><svg viewBox="0 0 576 512" width="100" title="eye">
+    <path d="M572.52 241.4C518.29 135.59 410.93 64 288 64S57.68 135.64 3.48 241.41a32.35 32.35 0 0 0 0 29.19C57.71 376.41 165.07 448 288 448s230.32-71.64 284.52-177.41a32.35 32.35 0 0 0 0-29.19zM288 400a144 144 0 1 1 144-144 143.93 143.93 0 0 1-144 144zm0-240a95.31 95.31 0 0 0-25.31 3.79 47.85 47.85 0 0 1-66.9 66.9A95.78 95.78 0 1 0 288 160z" />
+  </svg></button>
+    </div>
+  <ul>
+  </ul>
+  
+  <form id="formulario">
+    <input id="inputMensaje" type="text">
+    <input type="submit" value="Enviar">
+  </form>
+  </section>
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="pictochat.js"></script>
+</body>
+</html>
