@@ -36,11 +36,18 @@
     user-select: none;
   }
   
-  #chat-titulo{
+  #chat-titulo, #herramientas-titulo{
     padding: 0.5rem;
     display: flex;
     justify-content: space-between;
     align-items: center;
+  }
+
+  #herramientas-ui{
+    padding: 0.5rem;
+  }
+  input[type="range"]{
+    width: 100%;
   }
   input[type="submit"]{
     padding: 0.25rem;

@@ -10,7 +10,8 @@ CREATE TABLE lineas (
     x INTEGER NOT NULL,
     y INTEGER NOT NULL,
     pX INTEGER NOT NULL,
-    pY INTEGER NOT NULL
+    pY INTEGER NOT NULL,
+    brushSize INTEGER NOT NULL DEFAULT 1
 );
 
 INSERT INTO mensajes (mensaje) VALUES ('Hola mundo!');

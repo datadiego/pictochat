@@ -12,7 +12,7 @@ const port = 3000;
 app.use(express.static("public"));
 
 app.get("/", (req, res) => {
-    res.send("Pictochat!");
+    res.sendFile(path.join(__dirname,"/public/pictochat.html"))
 })
 
 app.get("/reset", (req, res) => {
@@ -27,8 +27,12 @@ app.get("/mensajes", (req, res) => {
     res.json(mensajes)
 });
 
+app.get("/puntos", (req, res) => {
+    const puntos = getPoints()
+    res.json(puntos)
+});
+
 io.on("connection", (socket) => {
-    console.log("Usuario conectado");
     const lineas = getPoints()
     io.emit("init dibujo", lineas)
     socket.on("chat message", (msg) => {

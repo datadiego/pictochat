@@ -1,24 +1,24 @@
 const socket = io();
 
-let draggingChat = false;
+const inputSize = document.querySelector("#inputSize")
+
+let brushSize = 10
+let dragging = false;
 // Desplazar la ventana de chat
 const elemento = $('section')
   $( function() {
     $( "section" ).draggable({
         //handle: "#chat-titulo",
         start: function(){
-            draggingChat = true;
-            console.log("dragging")
+            dragging = true;
         },
         stop: function(){
-            draggingChat = false;
-            console.log("stopped")
+            dragging = false;
         }
     })
   } );
 
 const updateChat = (mensajes) => {
-  console.log(mensajes)
   mensajes.forEach(msg => {
     const li = document.createElement("li")
     li.innerText = msg
@@ -27,8 +27,22 @@ const updateChat = (mensajes) => {
   })
 }
 
-fetch("/mensajes").then(res => res.json()).then(mensajes => updateChat(mensajes))
+const updateDraw = (puntos) => {
+  puntos.forEach(punto => {
+    layerDibujo.strokeWeight(punto.brushSize)
+    layerDibujo.line(punto.x, punto.y, punto.pX, punto.pY)
+  })
+}
 
+const updateSize = () => {
+  brushSize = inputSize.value
+  dragging = true; //evitamos que dibuje al usar el slider
+}
+inputSize.addEventListener("input", updateSize)
+inputSize.addEventListener("change", () => dragging = false) //permitimos dibujar al soltar
+
+fetch("/mensajes").then(res => res.json()).then(mensajes => updateChat(mensajes))
+fetch("/puntos").then(res => res.json()).then(puntos => updateDraw(puntos) )
 // Mostrar y ocultar el chat
 function toggleChat(){
   const lista = document.querySelector("ul")
@@ -50,11 +64,6 @@ form.addEventListener("submit", (e) => {
     socket.emit("chat message", mensaje)
 })
 
-socket.on("init dibujo", (lineas) => {
-  console.log(lineas)
-  lineas.forEach(linea => line(linea.x, linea.y, linea.pX, linea.pY))
-})
-
 socket.on("chat message", (msg) => {
     const lista = document.querySelector("ul")
     const item = document.createElement("li")
@@ -63,26 +72,38 @@ socket.on("chat message", (msg) => {
 });
 
 socket.on("draw", (data) => {
-    line(data.pX, data.pY, data.x, data.y)
+    layerDibujo.strokeWeight(data.brushSize)
+    layerDibujo.line(data.pX, data.pY, data.x, data.y)
 })
+
+let layerDibujo
+let layerPuntero
+
 
 function setup(){
     createCanvas(windowWidth, windowHeight)
     background(220)
+    layerPuntero = createGraphics(width, height)
+    layerPuntero.noFill()
+    layerDibujo = createGraphics(width, height)
 }
 
 function draw(){
-    if(mouseIsPressed && !draggingChat){
-        //draw only if mouse moves
-        if(mouseX !== pmouseX || mouseY !== pmouseY){
-        //line(pmouseX, pmouseY, mouseX, mouseY)
-        const posicion = {
-            x: mouseX,
-            y: mouseY,
-            pX: pmouseX,
-            pY: pmouseY
-        }
-        socket.emit("draw", posicion)
-        }
+  background(220)
+  layerPuntero.ellipse(mouseX, mouseY, brushSize)
+  image(layerPuntero, 0, 0)
+  layerPuntero.clear()
+  image(layerDibujo, 0, 0)
+  if(mouseIsPressed && !dragging){
+    if(mouseX !== pmouseX || mouseY !== pmouseY){
+      const posicion = {
+        x: mouseX,
+        y: mouseY,
+        pX: pmouseX,
+        pY: pmouseY,
+        brushSize: brushSize
+      }
+      socket.emit("draw", posicion)
     }
+  }
 }
