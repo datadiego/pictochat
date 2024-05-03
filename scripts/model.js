@@ -23,7 +23,7 @@ function insertMensaje(mensaje){
 }
 
 function insertPoints(data){
-    const statement = db.prepare("INSERT INTO lineas (x, y, pX, pY, brushSize) VALUES (?, ?, ?, ?, ?)").run(data.x, data.y, data.pX, data.pY, data.brushSize);
+    const statement = db.prepare("INSERT INTO lineas (x, y, pX, pY, brushSize, colorFront) VALUES (?, ?, ?, ?, ?, ?)").run(data.x, data.y, data.pX, data.pY, data.brushSize, data.colorFront);
 }
 
 function getPoints(){

@@ -1,8 +1,9 @@
 const socket = io();
 
 const inputSize = document.querySelector("#inputSize")
+const inputColor = document.querySelector("#inputColor")
 
-let brushSize = 10
+let brushSize = inputSize.value
 let dragging = false;
 // Desplazar la ventana de chat
 const elemento = $('section')
@@ -29,6 +30,7 @@ const updateChat = (mensajes) => {
 
 const updateDraw = (puntos) => {
   puntos.forEach(punto => {
+    layerDibujo.stroke(punto.colorFront)
     layerDibujo.strokeWeight(punto.brushSize)
     layerDibujo.line(punto.x, punto.y, punto.pX, punto.pY)
   })
@@ -36,11 +38,27 @@ const updateDraw = (puntos) => {
 
 const updateSize = () => {
   brushSize = inputSize.value
+  layerDibujo.strokeWeight(brushSize)
+  strokeWeight(brushSize)
+  console.log(brushSize)
   dragging = true; //evitamos que dibuje al usar el slider
 }
-inputSize.addEventListener("input", updateSize)
+const updateColor = () => {
+  dragging = true; 
+  layerDibujo.stroke(inputColor.value)
+  stroke(inputColor.value)
+}
+
+const updateSettings = () => {
+  brushSize = inputSize.value
+  updateSize()
+  updateColor()
+}
+inputSize.addEventListener("input", updateSettings)
 inputSize.addEventListener("change", () => dragging = false) //permitimos dibujar al soltar
 
+inputColor.addEventListener("input", updateColor)
+inputColor.addEventListener("change", () => dragging = false) 
 fetch("/mensajes").then(res => res.json()).then(mensajes => updateChat(mensajes))
 fetch("/puntos").then(res => res.json()).then(puntos => updateDraw(puntos) )
 // Mostrar y ocultar el chat
@@ -72,7 +90,6 @@ socket.on("chat message", (msg) => {
 });
 
 socket.on("draw", (data) => {
-    layerDibujo.strokeWeight(data.brushSize)
     layerDibujo.line(data.pX, data.pY, data.x, data.y)
 })
 
@@ -101,7 +118,8 @@ function draw(){
         y: mouseY,
         pX: pmouseX,
         pY: pmouseY,
-        brushSize: brushSize
+        brushSize: brushSize,
+        colorFront: inputColor.value
       }
       socket.emit("draw", posicion)
     }
