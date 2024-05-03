@@ -17,6 +17,18 @@ const elemento = $('section')
     })
   } );
 
+const updateChat = (mensajes) => {
+  console.log(mensajes)
+  mensajes.forEach(msg => {
+    const li = document.createElement("li")
+    li.innerText = msg
+    document.querySelector("ul").appendChild(li)
+  
+  })
+}
+
+fetch("/mensajes").then(res => res.json()).then(mensajes => updateChat(mensajes))
+
 // Mostrar y ocultar el chat
 function toggleChat(){
   const lista = document.querySelector("ul")
@@ -36,15 +48,6 @@ form.addEventListener("submit", (e) => {
     const mensaje = input.value
     input.value = ""
     socket.emit("chat message", mensaje)
-})
-
-socket.on("init chat", (mensajes) => {
-  //console.log(mensajes);
-  mensajes.forEach(msgObj => {
-    const li = document.createElement("li")
-    li.innerText = msgObj.mensaje
-    document.querySelector("ul").appendChild(li)
-  })
 })
 
 socket.on("init dibujo", (lineas) => {

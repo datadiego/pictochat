@@ -20,10 +20,15 @@ app.get("/reset", (req, res) => {
     res.send("Base de datos reseteada")  
 })
 
+app.get("/mensajes", (req, res) => {
+    const mensajesObj = readAll();
+    const mensajes = []
+    mensajesObj.forEach((mensaje) => mensajes.push(mensaje.mensaje))
+    res.json(mensajes)
+});
+
 io.on("connection", (socket) => {
     console.log("Usuario conectado");
-    const mensajes = readAll(); //recupera mensajes antiguos
-    io.emit("init chat", mensajes) //envialos
     const lineas = getPoints()
     io.emit("init dibujo", lineas)
     socket.on("chat message", (msg) => {
