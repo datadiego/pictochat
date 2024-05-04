@@ -41,6 +41,7 @@ io.on("connection", (socket) => {
     });
 
     socket.on("draw", (data) => {
+        console.log(data)
         insertPoints(data)
         io.emit("draw", data);
     });

@@ -34,16 +34,31 @@
     width: 300px;
     border-radius: 0.5rem;
     user-select: none;
+    background: white;
   }
-  
+
+  div.horizontal label {
+    min-width: 110px;
+    text-align: right;
+  }
+  input[type="color"]{
+    height: 2rem;
+  }
   #chat-titulo, #herramientas-titulo{
     padding: 0.5rem;
     display: flex;
     justify-content: space-between;
     align-items: center;
   }
-
+  .horizontal{
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 0.5rem;
+  }
   #herramientas-ui{
+    display: flex;
+    flex-direction: column;
     padding: 0.5rem;
   }
   input[type="range"]{
@@ -64,7 +79,7 @@
     background: rgba(255,255,255,0.3); 
   }
   
-  #btn-toggle-chat{
+  #btn-toggle-chat, #btn-toggle-herramientas{
     background: none;
     border: 1px solid black;
     border-radius: 0.25rem;

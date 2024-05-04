@@ -12,7 +12,8 @@ CREATE TABLE lineas (
     pX INTEGER NOT NULL,
     pY INTEGER NOT NULL,
     brushSize INTEGER NOT NULL DEFAULT 1,
-    colorFront TEXT NOT NULL DEFAULT '#000000'
+    colorFront TEXT NOT NULL DEFAULT '#000000',
+    backgroundColor TEXT NOT NULL DEFAULT '#AAAAAA'
 );
 
 INSERT INTO mensajes (mensaje) VALUES ('Hola mundo!');
